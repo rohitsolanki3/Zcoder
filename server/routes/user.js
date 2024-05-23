@@ -132,4 +132,25 @@ userRouter.post('/signin', async (req, res) => {
     });
 })
 
+userRouter.get('/details', async (req,res) => {
+    const data = req.headers.authorization;
+    // console.log(data);
+    const token = data.split(" ")[1];
+
+    try{
+        const decoded = jwt.verify(token, JWT_SECRET);
+        const user = await User.findOne({
+        _id: decoded.userId
+        });
+        res.status(200).json({
+            user
+        });
+    }
+    catch{
+        res.status(400).json({
+            msg: "Invalid token"
+        });
+    }
+})
+
 module.exports = { userRouter };
