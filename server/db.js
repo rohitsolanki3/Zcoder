@@ -39,6 +39,26 @@ const userSchema = new mongoose.Schema({
 
 });
 
-const User = mongoose.model('User', userSchema);
+// problemSchema coming from the problems.js file
+const problemSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+    contestId: {
+    type: Number,
+    required: true,
+  },
+  index: {
+    type: String,
+    required: true,
+  },
+  rating: {
+    type: Number,
+    required: true,
+  }
+});
 
-module.exports = { User };
+const User = mongoose.model('User', userSchema);
+const Problem = mongoose.model('Problem', problemSchema);
+module.exports = { User, Problem};
