@@ -27,7 +27,9 @@ const Problemset = () => {
               tags: question.tags,
               rating: question.rating,
               contestId: question.contestId,
-              index: question.index
+              index: question.index,
+              solved: false, // Track solved state
+              bookmarked: false // Track bookmarked state
             });
           }
           return acc;
@@ -46,6 +48,24 @@ const Problemset = () => {
     setExpandedRatings(prevState => ({
       ...prevState,
       [rating]: !prevState[rating]
+    }));
+  };
+
+  const toggleSolved = (rating, id) => {
+    setGroupedQuestions(prevGroupedQuestions => ({
+      ...prevGroupedQuestions,
+      [rating]: prevGroupedQuestions[rating].map(question =>
+        question.id === id ? { ...question, solved: !question.solved } : question
+      )
+    }));
+  };
+
+  const toggleBookmarked = (rating, id) => {
+    setGroupedQuestions(prevGroupedQuestions => ({
+      ...prevGroupedQuestions,
+      [rating]: prevGroupedQuestions[rating].map(question =>
+        question.id === id ? { ...question, bookmarked: !question.bookmarked } : question
+      )
     }));
   };
 
@@ -132,7 +152,7 @@ const Problemset = () => {
 
   return (
     <div style={styles.container}>
-      <h2 style={{ marginLeft: '20px',marginBottom: '20px'}}>Codeforces Problemset</h2>
+      <h2 style={{ marginLeft: '20px', marginBottom: '20px' }}>Codeforces Problemset</h2>
       {Object.entries(groupedQuestions).map(([rating, questions]) => (
         <div key={rating} style={styles.group}>
           <div style={styles.groupHeader} onClick={() => toggleRating(rating)}>
@@ -149,7 +169,8 @@ const Problemset = () => {
                 </div>
                 <div style={styles.buttonsRow}>
                   <button
-                    style={Math.random() > 0.5 ? styles.solvedButton : styles.unsolvedButton} // Randomly simulate solved/unsolved state
+                    style={question.solved ? styles.solvedButton : styles.unsolvedButton}
+                    onClick={() => toggleSolved(rating, question.id)}
                   >
                     <FontAwesomeIcon icon={faCheckCircle} />
                   </button>
@@ -161,7 +182,11 @@ const Problemset = () => {
                   >
                     View Problem
                   </a>
-                  <button className="btn btn-outline-primary" style={styles.bookmarkButton}>
+                  <button
+                    className="btn btn-outline-primary"
+                    style={question.bookmarked ? { ...styles.bookmarkButton, color: 'red' } : styles.bookmarkButton}
+                    onClick={() => toggleBookmarked(rating, question.id)}
+                  >
                     <FontAwesomeIcon icon={faBookmark} />
                   </button>
                 </div>
