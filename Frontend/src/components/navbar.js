@@ -3,29 +3,74 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = () => {
+  const styles = {
+    navbar: {
+      backgroundColor: '#343a40',
+      height: '100px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      padding: '0 20px',
+      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      width: '100%'
+    },
+    brand: {
+      color: '#ffffff', 
+      fontSize: '24px',
+      fontWeight: 'bold',
+      textDecoration: 'none'
+    },
+    profileButton: {
+      backgroundColor: '#007bff', 
+      color: '#ffffff', 
+      border: 'none',
+      borderRadius: '5px',
+      padding: '8px 16px',
+      cursor: 'pointer',
+      marginRight: '10px' 
+    },
+    searchForm: {
+      display: 'flex',
+      alignItems: 'center'
+    },
+    searchInput: {
+      marginRight: '10px',
+      padding: '8px',
+      border: '1px solid #ced4da', 
+      borderRadius: '5px',
+      fontSize: '16px'
+    },
+    searchButton: {
+      backgroundColor: '#28a745', 
+      color: '#ffffff', 
+      border: 'none',
+      borderRadius: '5px',
+      padding: '8px 16px',
+      cursor: 'pointer'
+    }
+  };
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark" style={{ position: 'fixed', top: 0, width: 'calc(100% - 250px)',height: '100px' ,marginLeft: '-250px' }}>
-      <div className="container-fluid">
-        <a className="navbar-brand" href="#">
-          <h1>Zcoder</h1>
-        </a>
-        <div className="d-flex align-items-center"> {/* Added a div for alignment */}
-          <button className="btn btn-outline-light me-2" type="button"> {/* Profile button */}
-            <FontAwesomeIcon icon={faUser} />
-          </button>
-          <form className="d-flex" role="search">
-            <input
-              className="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button className="btn btn-outline-success" type="submit">
-              Search
-            </button>
-          </form>
-        </div>
-      </div>
+    <nav style={styles.navbar}>
+      <a href="#" style={styles.brand}>
+        <h1>Zcoder</h1>
+      </a>
+      <form style={styles.searchForm}>
+        <button style={styles.profileButton}>
+          <FontAwesomeIcon icon={faUser} /> Profile
+        </button>
+        <input
+          type="text"
+          placeholder="Search"
+          style={styles.searchInput}
+        />
+        <button type="submit" style={styles.searchButton}>
+          Search
+        </button>
+      </form>
     </nav>
   );
 };

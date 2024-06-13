@@ -51,9 +51,12 @@ const Problemset = () => {
 
   const styles = {
     container: {
-      marginLeft: '250px',
-      paddingTop: '100px',
-      paddingLeft: '20px'
+      paddingLeft: '0px',
+      paddingRight: '20px',
+      width: '100%', 
+      display: 'flex',
+      flexDirection: 'column',
+      marginTop: '150px'
     },
     group: {
       marginBottom: '40px'
@@ -74,10 +77,11 @@ const Problemset = () => {
       border: '1px solid #ccc',
       borderRadius: '8px',
       padding: '16px',
-      margin: '16px 0',
+      marginBottom: '16px',
       boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
       transition: 'transform 0.2s ease-in-out',
-      position: 'relative'
+      display: 'flex',
+      flexDirection: 'column'
     },
     cardTitle: {
       margin: 0,
@@ -92,6 +96,7 @@ const Problemset = () => {
       fontWeight: 'bold'
     },
     buttonsRow: {
+      marginTop: 'auto',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between'
@@ -127,7 +132,7 @@ const Problemset = () => {
 
   return (
     <div style={styles.container}>
-      <h2>Codeforces Problemset</h2>
+      <h2 style={{ marginLeft: '20px',marginBottom: '20px'}}>Codeforces Problemset</h2>
       {Object.entries(groupedQuestions).map(([rating, questions]) => (
         <div key={rating} style={styles.group}>
           <div style={styles.groupHeader} onClick={() => toggleRating(rating)}>
