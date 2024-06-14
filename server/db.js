@@ -56,9 +56,13 @@ const problemSchema = new mongoose.Schema({
   rating: {
     type: Number,
     required: true,
-  }
+  },
+  tags: {
+    type: [String],
+    required: true,
+  },
 });
 
 const User = mongoose.model('User', userSchema);
 const Problem = mongoose.model('Problem', problemSchema);
-module.exports = { User, Problem};
+module.exports = { User, Problem };

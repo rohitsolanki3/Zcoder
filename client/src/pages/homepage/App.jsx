@@ -3,14 +3,14 @@ import Navbar from './components/navbar';
 import Sidebar from './components/sidebar';
 import Problemset from './components/problemset';
 
-function App() {
+function Homepage() {
   return (
     <div className="container-fluid">
-      <div className="row">
-        <div className="col-lg-3">
+      <div className="grid grid-cols-12">
+        <div className="col-span-3">
           <Sidebar />
         </div>
-        <div className="col-lg-9">
+        <div className="col-span-9">
           <Navbar />
           <Problemset />
         </div>
@@ -19,4 +19,4 @@ function App() {
   );
 }
 
-export default App;
+export default Homepage;

@@ -38,11 +38,21 @@ problemRouter.post('/coding', async (req, res) => {
                 contestId: problem.contestId,
                 index: problem.index,
                 rating: problem.rating,
+                tags: problem.tags
             };
         });
         // insert the problems into the database
         await Problem.insertMany(problemsToInsertFormatted);
         res.json({message: "Problems inserted successfully", problems: problemsToInsertFormatted});
+    } catch (error) {
+        res.send(error);
+    }
+});
+
+problemRouter.get('/bulk', async (req, res) => {
+    try {
+        const problems = await Problem.find();
+        res.json(problems);
     } catch (error) {
         res.send(error);
     }
