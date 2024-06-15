@@ -11,8 +11,17 @@ function Sidebar() {
   const [user, setUser] = useState({});
   useEffect(() => {
     const fetchUser = async () => {
-      const response = await axios.get("http://localhost:3000/api/v1/user/details");
-      setUser(response.data);
+      try {
+        const response = await axios.get("http://localhost:3000/api/v1/user/details", {
+          headers: {
+            Authorization: localStorage.getItem('token'),
+          },
+        });
+        console.log(response.data.user);
+        setUser(response.data.user);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
     };
     fetchUser();
   }, []);
@@ -23,8 +32,8 @@ function Sidebar() {
         <FontAwesomeIcon icon={faPen} />
       </div>
       <div className="profile-image"></div>
-      <h2>Rohit Solanki</h2>
-      <p>#Destroyer8935</p>
+      <h1>{user.username}</h1>
+      <h2>{user.codeforcesHandle}</h2>
       <div className="social-icons">
         <FontAwesomeIcon icon={faGithub} />
         <FontAwesomeIcon icon={faLinkedin} />
@@ -33,7 +42,7 @@ function Sidebar() {
       <div className="contact-info">
         <div className="info-item">
           <FontAwesomeIcon icon={faEnvelope} />
-          <span>rohit6june2004@gmail.com</span>
+          <span>{user.email}</span>
         </div>
         <div className="info-item">
           <FontAwesomeIcon icon={faUniversity} />
