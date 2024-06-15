@@ -36,6 +36,19 @@ const userSchema = new mongoose.Schema({
     required: false,
     trim: true,
   },
+  solvedProblems: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Problem',
+    }
+  ],
+
+  bookmarkedProblems: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Problem', 
+    }
+  ],
 
 });
 

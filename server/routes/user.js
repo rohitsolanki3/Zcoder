@@ -153,4 +153,4 @@ userRouter.get('/details', async (req,res) => {
     }
 })
 
-module.exports = { userRouter };
+module.exports = { userRouter, JWT_SECRET };

@@ -12,6 +12,13 @@ const Problemset = () => {
       try {
         const response = await axios.get('http://localhost:3000/api/v1/problem/bulk');
         const questions = response.data;
+        const user = await axios.get('http://localhost:3000/api/v1/user/details',{
+          headers: {
+            Authorization: localStorage.getItem('token')
+          }
+        });
+        const solvedProblems = user.data.user.solvedProblems;
+        const bookmarkedProblems = user.data.user.bookmarkedProblems;
 
         // Group questions by rating
         const grouped = questions.reduce((acc, question) => {
@@ -19,14 +26,14 @@ const Problemset = () => {
           if (rating) {
             if (!acc[rating]) acc[rating] = [];
             if (acc[rating].length < 5) acc[rating].push({
-              id: question.contestId + question.index,
+              id: question._id,
               name: question.name,
               tags: question.tags,
               rating: question.rating,
               contestId: question.contestId,
               index: question.index,
-              solved: false, // Track solved state
-              bookmarked: false // Track bookmarked state
+              solved: solvedProblems.includes(question._id), // Track solved state
+              bookmarked: bookmarkedProblems.includes(question._id), // Track bookmarked state
             });
           }
           return acc;
@@ -48,22 +55,54 @@ const Problemset = () => {
     }));
   };
 
-  const toggleSolved = (rating, id) => {
+  const toggleSolved = async(rating, id, solved) => {
     setGroupedQuestions(prevGroupedQuestions => ({
       ...prevGroupedQuestions,
       [rating]: prevGroupedQuestions[rating].map(question =>
         question.id === id ? { ...question, solved: !question.solved } : question
       )
     }));
+    if(solved){
+      await axios.delete(`http://localhost:3000/api/v1/solve/${id}`,{
+        headers: {
+          Authorization: localStorage.getItem('token')
+        }
+      });
+    }
+    else{
+      await axios.post(`http://localhost:3000/api/v1/solve/`,{
+        problemId: id
+      },{
+        headers: {
+          Authorization: localStorage.getItem('token')
+        }
+    })
+  }
   };
 
-  const toggleBookmarked = (rating, id) => {
+  const toggleBookmarked = async(rating, id, bookmarked) => {
     setGroupedQuestions(prevGroupedQuestions => ({
       ...prevGroupedQuestions,
       [rating]: prevGroupedQuestions[rating].map(question =>
         question.id === id ? { ...question, bookmarked: !question.bookmarked } : question
       )
     }));
+    if(bookmarked){
+      await axios.delete(`http://localhost:3000/api/v1/bookmark/${id}`,{
+        headers: {
+          Authorization: localStorage.getItem('token')
+        }
+      });
+    }
+    else{
+      await axios.post(`http://localhost:3000/api/v1/bookmark/`,{
+        problemId: id
+      },{
+        headers: {
+          Authorization: localStorage.getItem('token')
+        }
+    })
+  }
   };
 
   const styles = {
@@ -167,7 +206,7 @@ const Problemset = () => {
                 <div style={styles.buttonsRow}>
                   <button
                     style={question.solved ? styles.solvedButton : styles.unsolvedButton}
-                    onClick={() => toggleSolved(rating, question.id)}
+                    onClick={() => toggleSolved(rating, question.id, question.solved)}
                   >
                     <FontAwesomeIcon icon={faCheckCircle} />
                   </button>
@@ -182,7 +221,7 @@ const Problemset = () => {
                   <button
                     className="btn btn-outline-primary"
                     style={question.bookmarked ? { ...styles.bookmarkButton, color: 'red' } : styles.bookmarkButton}
-                    onClick={() => toggleBookmarked(rating, question.id)}
+                    onClick={() => toggleBookmarked(rating, question.id, question.bookmarked)}
                   >
                     <FontAwesomeIcon icon={faBookmark} />
                   </button>
